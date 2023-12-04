@@ -14,20 +14,31 @@
         (Integer/parseInt))
     0))
 
-(defn word->digit-str [word]
+(defn word->digit [word]
   (let [index (.indexOf words word)]
     (if (not= index -1)
-      (str (inc index))
-      "")))
+      (inc index))))
 
-(defn replace-digit-words [line]
-  (let [modified-line (if (not (empty? line))
-                        (str/replace line
-                                     (re-pattern (str "(" (str/join "|" words) ")"))
-                                     #(word->digit-str (first %)))
-                        "")]
-    ;(println line " -> " (filter-digits modified-line) "=>" (build-two-digit-number (filter-digits modified-line)))
-    modified-line))
+(defn starting-word [substr]
+  "returns the starting digit word else nil"
+  (reduce #(if (str/starts-with? substr %2) %2 %1)
+          nil words))
+
+(defn filter-digits2 [line]
+  "filters digits and digit words. words can overlap so a simple replace does not give the correct answer."
+  (reduce (fn [digits i]
+            (let [ch (get line i)]
+              (cond
+                (Character/isDigit ch) (conj digits ch)
+                (str/includes? "otfsen" (str ch)) (let [substr (subs line i)
+                                                        word (starting-word substr)
+                                                        digit (if word (word->digit word))]
+                                                      (if digit
+                                                        (conj digits digit)
+                                                        digits))
+                :else digits)))
+          []
+          (range 0 (count line))))
 
 (defn line-values-part1 [text]
   "returns the two-digit numbers of each row - for solution part 1"
@@ -40,8 +51,7 @@
   "returns the two-digit numbers of each row - for solution part 2"
   (->> text
        (str/split-lines)
-       (map replace-digit-words)
-       (map filter-digits)
+       (map filter-digits2)
        (map build-two-digit-number)))
 
 (defn main []
