@@ -55,7 +55,7 @@
         sample-games (get-game-list text)
         games (get-game-list input)]
 
-    ; sample1
+    ; sample
     (println "games possible - sample1: " (map #(game-possible? % limit-set) sample-games))
     (println "game id sum - sample1:    " (calc-sum sample-games limit-set))
     (println "power - sample2           " (calc-power sample-games))

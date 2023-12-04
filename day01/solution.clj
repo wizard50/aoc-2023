@@ -62,7 +62,7 @@
         calibration-values2 (line-values-part2 text2)
         input (slurp "src/day01/input.txt")]
 
-    ; calibration
+    ; sample
     (println "calibration values part1: " calibration-values1)
     (println "sum part1:                " (reduce + calibration-values1))
 
