@@ -43,17 +43,25 @@
                (if possible? (+ %1 game-id) %1))
             0 (range 0 (count games)))))
 
+(defn calc-power [games]
+  (map #(* (get-max (:sets %) :red)
+           (get-max (:sets %) :blue)
+           (get-max (:sets %) :green)) games))
+
 (defn main []
-  (let [text1 (slurp "src/day02/sample-input1.txt")
+  (let [text (slurp "src/day02/sample-input1.txt")
         input (slurp "src/day02/input.txt")
         limit-set {:red 12 :green 13 :blue 14}
-        sample-games (get-game-list text1)
-        games1 (get-game-list input)]
+        sample-games (get-game-list text)
+        games (get-game-list input)]
 
-    ; calibration
+    ; sample1
     (println "games possible - sample1: " (map #(game-possible? % limit-set) sample-games))
     (println "game id sum - sample1:    " (calc-sum sample-games limit-set))
+    (println "power - sample2           " (calc-power sample-games))
+    (println "power sum - sample2       " (reduce + (calc-power sample-games)))
 
     ; solution
-    (println "solution part1 - sum:" (calc-sum games1 limit-set))
+    (println "solution part1 - sum:" (calc-sum games limit-set))
+    (println "solution part2 - power sum:" (reduce + (calc-power games)))
     ))
