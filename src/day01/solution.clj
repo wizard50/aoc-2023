@@ -30,12 +30,13 @@
             (let [ch (get line i)]
               (cond
                 (Character/isDigit ch) (conj digits ch)
-                (str/includes? "otfsen" (str ch)) (let [substr (subs line i)
-                                                        word (starting-word substr)
-                                                        digit (if word (word->digit word))]
-                                                      (if digit
-                                                        (conj digits digit)
-                                                        digits))
+                (str/includes? "otfsen" (str ch))
+                  (let [substr (subs line i)
+                        word (starting-word substr)
+                        digit (if word (word->digit word))]
+                      (if digit
+                        (conj digits digit)
+                        digits))
                 :else digits)))
           []
           (range 0 (count line))))
