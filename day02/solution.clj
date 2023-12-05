@@ -49,8 +49,8 @@
            (get-max (:sets %) :green)) games))
 
 (defn main []
-  (let [text (slurp "src/day02/sample-input1.txt")
-        input (slurp "src/day02/input.txt")
+  (let [text (slurp "day02/sample-input1.txt")
+        input (slurp "day02/input.txt")
         limit-set {:red 12 :green 13 :blue 14}
         sample-games (get-game-list text)
         games (get-game-list input)]

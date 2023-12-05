@@ -60,7 +60,7 @@
         text2 "two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen"
         calibration-values1 (line-values-part1 text1)
         calibration-values2 (line-values-part2 text2)
-        input (slurp "src/day01/input.txt")]
+        input (slurp "day01/input.txt")]
 
     ; sample
     (println "calibration values part1: " calibration-values1)
