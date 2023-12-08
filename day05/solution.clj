@@ -19,7 +19,7 @@
     (if (< (+ i 1) (count seeds))
       (let [start (nth seeds i)
             len (nth seeds (inc i))
-            range [start (+ start len)]
+            range [start (dec (+ start len))]
             new-result (conj result range)]
         (recur (+ i 2) new-result))
       result)))
