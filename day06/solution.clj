@@ -22,6 +22,13 @@
   "d = (t - hold) * hold"
   (* (- t hold) hold))
 
+(defn calc-ways-of-win-quadratic [t d]
+  "race formula: d = (t - x) * x     => -x² + t*x - d = 0
+   quadratic formula: x = (-b +/- sqrt(b^2 - 4ac)) / 2a"
+  (let [x1 (/ (+ (* -1 t) (Math/sqrt (- (* t t) (* 4 d)))) -2)
+        x2 (/ (- (* -1 t) (Math/sqrt (- (* t t) (* 4 d)))) -2)]
+    (long (- (Math/ceil x2) (Math/ceil x1)))))
+
 (defn calc-ways-of-win [time distance]
   (let [results (for [hold (range 0 time)]
                   {:hold hold
@@ -34,9 +41,13 @@
        (map count)
        (reduce *)))
 
-(defn solve2 [input]
+(defn solve2-bruteforce [input]
   (let [[t d] (parse2 input)]
     (count (calc-ways-of-win t d))))
+
+(defn solve2-quadratic [input]
+  (let [[t d] (parse2 input)]
+    (calc-ways-of-win-quadratic t d)))
 
 (defn main []
   (let [text (slurp "day06/sample-input.txt")
@@ -47,8 +58,11 @@
     ; sample
     (println "sample1 data: " sample-data)
     (println "ways of win (first record) - sample1:" (calc-ways-of-win t1 d1))
+    (println "ways of win quadratic (first record) - sample 1: " (calc-ways-of-win-quadratic t1 d1))
     (println "product ways of win  - sample 1:" (solve text))
 
     ; solution
     (println "product ways of win - part1: " (solve input))
-    (println "product ways of win - part2: " (solve2 input))))
+    (println "sum ways of win - part2: " (solve2-quadratic input))
+    (println "sum ways of win - part2 (bruteforce): " (solve2-bruteforce input))
+    ))
