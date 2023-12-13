@@ -28,7 +28,7 @@
           []
           (range 0 (count (first lines)))))
 
-(defn transpose [[x y] expansion-gaps]
+(defn translate [[x y] expansion-gaps]
   (let [{:keys [rows cols n]} expansion-gaps
         nx (reduce (fn [acc gx]
                      (if (> x gx)
@@ -51,8 +51,8 @@
             (let [g (nth galaxies n)
                   rest (nthrest galaxies (inc n))
                   distances (map #(calc-distance
-                                    (transpose g expansion-gaps)
-                                    (transpose % expansion-gaps)) rest)]
+                                    (translate g expansion-gaps)
+                                    (translate % expansion-gaps)) rest)]
               (concat acc distances)))
           []
           (range 0 (dec (count galaxies)))))
@@ -79,5 +79,3 @@
     (println "sum of galaxy distances - part 1, n=2" (solve2 input 2))
     (println "sum of galaxy distances - part 2, n=1000000" (solve2 input 1000000))
     ))
-
-
