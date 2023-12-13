@@ -71,7 +71,7 @@
         input (slurp "day11/input.txt")]
 
     ; sample
-    (println "sum of galaxy distances - sample 2, n=1" (solve2 text 2))
+    (println "sum of galaxy distances - sample 2, n=2" (solve2 text 2))
     (println "sum of galaxy distances - sample 2, n=10" (solve2 text 10))
     (println "sum of galaxy distances - sample 2, n=100" (solve2 text 100))
 
