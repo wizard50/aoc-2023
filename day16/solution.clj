@@ -70,13 +70,31 @@
              {})
        (count)))
 
+(defn solve2 [input]
+  (let [grid (parse input)]
+    (->> (concat
+           (for [y (range 0 (count grid))] [0 y :right])
+           (for [y (range 0 (count grid))] [(dec (count (first grid))) y :left])
+           (for [x (range 0 (count (first grid)))] [x 0 :down])
+           (for [x (range 0 (count (first grid)))] [x (dec (count grid)) :up]))
+         (map #(let [[x y dir] %]
+                 {:dir dir
+                  :y y
+                  :x x
+                  :energized (count (move grid [[[x y] dir]] {}))}))
+         (reduce #(if (and %2 (> (:energized %2) (:energized %1)))
+                    %2
+                    %1)))))
+
 (defn main []
   (let [text (slurp "day16/sample-input.txt")
         input (slurp "day16/input.txt")]
 
     ; sample
     (println "result - sample 1" (solve text))
+    (println "result - sample 2" (solve2 text))
 
     ; solution
     (println "result - part 1" (solve input))
+    (println "result - part 2" (solve2 input))
     ))
