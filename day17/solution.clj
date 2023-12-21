@@ -74,7 +74,8 @@
                                nbs)]
         (recur next-queue
                visited
-               (if (= (first (first (peek next-queue))) end-pos) dist)))
+               (let [[[pos dir] dist] (peek next-queue)]
+                 (if (= pos end-pos) dist))))
       shortest-distance)))
 
 (defn solve [input min-steps max-steps]
@@ -86,11 +87,15 @@
 
 (defn main []
   (let [text (slurp "day17/sample-input.txt")
+        text2 (slurp "day17/sample-input2.txt")
         input (slurp "day17/input.txt")]
 
     ; sample
     (println "result - sample 1:" (solve text 1 3))
+    (println "result - sample 2.1:" (solve text 4 10))
+    (println "result - sample 2.2:" (solve text2 4 10))
 
     ; solution
     (println "result - part 1:" (solve input 1 3))
+    (println "result - part 2:" (solve input 4 10))
     ))
