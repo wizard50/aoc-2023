@@ -8,21 +8,32 @@
     "D" [x (+ y n)]
     "U" [x (- y n)]))
 
-(defn parse-dig-plan [input]
+(defn parse-line1 [line]
+  (let [[dir n _] (str/split line #" ")]
+    {:dir dir
+     :n (parse-long n)}))
+
+(defn parse-line2 [line]
+  (let [[_ _ rgb] (str/split line #" ")
+        rgb (second (re-matches #"\(#([a-fA-F\d]{6})\)" rgb))]
+    {:dir (case (subs rgb 5 6)
+           "0" "R"
+           "1" "D"
+           "2" "L"
+           "3" "U")
+     :n (read-string (str "0x" (subs rgb 0 5)))}))
+
+(defn parse-dig-plan [input parse-line-fn]
   (let [lines (str/split-lines input)]
     (loop [i 0
            point [0 0]
            items []]
       (if (< i (count lines))
         (let [line (nth lines i)
-              [dir n rgb] (str/split line #" ")
-              n (parse-long n)
+              {:keys [dir n]} (parse-line-fn line)
               next-point (get-point point dir n)
               item {:dir dir
                     :n n
-                    :rgb (-> rgb
-                             (str/replace #"\(#" "")
-                             (str/replace #"\)" ""))
                     :point next-point}]
           (recur
             (inc i)
@@ -45,8 +56,8 @@
   interior = A - boundary / 2 + 1"
   (+ (- area (/ boundary 2)) 1))
 
-(defn solve [input]
-  (let [dig-plan (parse-dig-plan input)
+(defn solve [input parse-line-fn]
+  (let [dig-plan (parse-dig-plan input parse-line-fn)
         points (map #(:point %) dig-plan)
         area (shoelace points)
         boundary (reduce + 0 (map :n dig-plan))
@@ -58,9 +69,11 @@
         input (slurp "day18/input.txt")]
 
     ; sample
-    (println "result - sample 1:" (solve text))
+    (println "result - sample 1:" (solve text parse-line1))
+    (println "result - sample 2:" (solve text parse-line2))
 
     ; solution
-    (println "result - part 1" (solve input))
+    (println "result - part 1" (solve input parse-line1))
+    (println "result - part 2" (solve input parse-line2))
     ))
 
